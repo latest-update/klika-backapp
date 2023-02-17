@@ -19,12 +19,18 @@ export default {
         const start = (amount * ( page-1 ))
         return `limit ${amount} offset ${start}`
     },
+    order () {
+        let column = request._get?.column || 'name'
+        let order = request._get?.order || 'asc'
+        return `order by ${column} ${order}`
+    },
     all () {
         if (!request._get) {
             return `select * from songs ${this.page()}`
         }
 
         const filters = this.filters()
+        const order = this.order()
         const page = this.page()
 
         return `
@@ -36,7 +42,9 @@ export default {
                 from songs
                     inner join genres on songs.genre_id = genres.id
                     inner join singers on songs.singer_id = singers.id 
-            ${filters} ${page}
+            ${filters} 
+            ${order}
+            ${page}
         `
     }
 }
