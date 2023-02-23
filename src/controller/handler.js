@@ -21,7 +21,7 @@ export default class extends controller {
         res.json({
             genres: genres.data,
             singers: singers.data,
-            year: years.data.map(obj => obj.year)
+            year: years.data
         })
     }
 
