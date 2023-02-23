@@ -10,6 +10,7 @@ export default {
         const query = request._get
         const filterArr = Object.keys(query)
             .filter(key => this._filters[key])
+            .filter(key => query[key] !== '')
             .map(key => `${this._filters[key]}=${query[key]}`)
         return filterArr.join( ' and ' ) !== '' ? 'where ' + filterArr.join( ' and ' ) : ''
     },
@@ -45,6 +46,16 @@ export default {
             ${filters} 
             ${order}
             ${page}
+        `
+    },
+    amount () {
+        const filters = this.filters()
+        return `
+            select count(*) as amount 
+                from songs
+                    inner join genres on songs.genre_id = genres.id
+                    inner join singers on songs.singer_id = singers.id 
+            ${filters}
         `
     }
 }

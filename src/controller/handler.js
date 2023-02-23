@@ -5,7 +5,12 @@ import filter from "../database/filter.js";
 export default class extends controller {
 
     musics = async (req, res) => {
-        res.json( await this.database.fetch( music.all() ) )
+        const musics = await this.database.fetch( music.all() )
+        const count = await this.database.fetch( music.amount() )
+        res.status(musics.status).json({
+            amount: count.data[0].amount,
+            musics: musics.data
+        })
     }
 
     filters = async (req, res) => {
