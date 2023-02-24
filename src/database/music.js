@@ -7,7 +7,7 @@ export default {
         year: 'year'
     },
     filters () {
-        const query = request._get
+        const query = request._get ?? {}
         const filterArr = Object.keys(query)
             .filter(key => this._filters[key])
             .filter(key => query[key] !== '')
